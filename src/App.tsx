@@ -36,8 +36,8 @@ const App: React.FC = () => {
   // }, [todos]);
   return (
     <div className="app">
-      <div className="w-75">
-        <span className="heading float-left mr-5">Todo App</span>
+      <div className="w-75 head">
+        <span className="heading float-left mr-5">TodoApp</span>
         <div className="float-right mt-5 ml-5 ">
           <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
         </div>
