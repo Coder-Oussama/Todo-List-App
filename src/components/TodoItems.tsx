@@ -4,13 +4,18 @@ import TodoItem from "./TodoItem";
 
 interface Props {
   todos: Todo[];
+  searchTerm: string;
   setTodos: React.Dispatch<React.SetStateAction<Todo[]>>;
 }
-const TodoItems: React.FC<Props> = ({ todos, setTodos }: Props) => {
+const TodoItems: React.FC<Props> = ({ todos, setTodos, searchTerm }: Props) => {
+   const filteredTodos = todos.filter((todo) =>
+     todo.todo.toLowerCase().includes(searchTerm.toLowerCase())
+   );
+
   return (
     <div className="container">
       <div className="todos">
-        {todos.map((todo) => (
+        {filteredTodos.map((todo) => (
           <TodoItem
             todo={todo}
             key={todo.id}
