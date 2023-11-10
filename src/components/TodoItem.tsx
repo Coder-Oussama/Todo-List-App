@@ -11,9 +11,13 @@ const TodoItem = ({ todo, todos, setTodos }: Props) => {
   const [edit, setEdit] = useState<boolean>(false);
   const [editTodo, setEditTodo] = useState<string>(todo.todo);
   const [isCopied, setIsCopied] = useState<boolean>(false);
-  
+
   const handleDelete = (id: number) => {
     setTodos(todos.filter((todo) => todo.id !== id));
+    localStorage.setItem(
+      "todos",
+      JSON.stringify(todos.filter((todo) => todo.id !== id))
+    );
   };
   const handleEdit = (e: React.FormEvent, id: number) => {
     e.preventDefault();
@@ -21,36 +25,44 @@ const TodoItem = ({ todo, todos, setTodos }: Props) => {
       todos.map((todo) => (todo.id === id ? { ...todo, todo: editTodo } : todo))
     );
     setEdit(false);
+    localStorage.setItem(
+      "todos",
+      JSON.stringify(
+        todos.map((todo) =>
+          todo.id === id ? { ...todo, todo: editTodo } : todo
+        )
+      )
+    );
   };
   const inputRef = useRef<HTMLInputElement>(null);
   useEffect(() => {
     inputRef.current?.focus();
   }, [edit]);
-    const handleCopyToClipboard = () => {
-      // Create a temporary textarea element
-      const textarea = document.createElement("textarea");
-      textarea.value = editTodo;
+  const handleCopyToClipboard = () => {
+    // Create a temporary textarea element
+    const textarea = document.createElement("textarea");
+    textarea.value = editTodo;
 
-      // Append the textarea to the document
-      document.body.appendChild(textarea);
+    // Append the textarea to the document
+    document.body.appendChild(textarea);
 
-      // Select the text inside the textarea
-      textarea.select();
+    // Select the text inside the textarea
+    textarea.select();
 
-      // Copy the selected text to the clipboard
-      document.execCommand("copy");
+    // Copy the selected text to the clipboard
+    document.execCommand("copy");
 
-      // Remove the temporary textarea
-      document.body.removeChild(textarea);
+    // Remove the temporary textarea
+    document.body.removeChild(textarea);
 
-      // Update state to indicate successful copy
-      setIsCopied(true);
+    // Update state to indicate successful copy
+    setIsCopied(true);
 
-      // Reset the copied state after a short delay
-      setTimeout(() => {
-        setIsCopied(false);
-      }, 2000);
-    };
+    // Reset the copied state after a short delay
+    setTimeout(() => {
+      setIsCopied(false);
+    }, 2000);
+  };
   return (
     <form className="todosSingle" onSubmit={(e) => handleEdit(e, todo.id)}>
       {edit ? (

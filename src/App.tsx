@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import "./App.css";
 import InputField from "./components/InputField";
@@ -7,6 +7,15 @@ import TodoItems from "./components/TodoItems";
 import SearchBar from "./components/SearchBar";
 
 const App: React.FC = () => {
+  useEffect(() => {
+    const storedTodos = localStorage.getItem("todos");
+    if (storedTodos) {
+      setTodos(JSON.parse(storedTodos));
+    }
+  }, []);
+
+  // Save todos to localStorage whenever todos change
+
   const [todo, setTodo] = useState<string>("");
   const [todos, setTodos] = useState<Todo[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -15,9 +24,16 @@ const App: React.FC = () => {
     if (todo) {
       setTodos([...todos, { id: Date.now(), todo }]);
       setTodo("");
+      localStorage.setItem(
+        "todos",
+        JSON.stringify([...todos, { id: Date.now(), todo }])
+      );
     }
   };
 
+  // useEffect(() => {
+  //   localStorage.setItem("todos", JSON.stringify(todos));
+  // }, [todos]);
   return (
     <div className="app">
       <div className="w-75">
