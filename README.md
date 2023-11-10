@@ -1,4 +1,5 @@
 # Todo App - A Simple Todo Application
+![Todo App ](./src/assets/background.jpg)
 
 ## Overview
 
