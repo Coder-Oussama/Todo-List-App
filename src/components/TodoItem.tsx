@@ -10,7 +10,8 @@ type Props = {
 const TodoItem = ({ todo, todos, setTodos }: Props) => {
   const [edit, setEdit] = useState<boolean>(false);
   const [editTodo, setEditTodo] = useState<string>(todo.todo);
-
+  const [isCopied, setIsCopied] = useState<boolean>(false);
+  
   const handleDelete = (id: number) => {
     setTodos(todos.filter((todo) => todo.id !== id));
   };
@@ -25,6 +26,31 @@ const TodoItem = ({ todo, todos, setTodos }: Props) => {
   useEffect(() => {
     inputRef.current?.focus();
   }, [edit]);
+    const handleCopyToClipboard = () => {
+      // Create a temporary textarea element
+      const textarea = document.createElement("textarea");
+      textarea.value = editTodo;
+
+      // Append the textarea to the document
+      document.body.appendChild(textarea);
+
+      // Select the text inside the textarea
+      textarea.select();
+
+      // Copy the selected text to the clipboard
+      document.execCommand("copy");
+
+      // Remove the temporary textarea
+      document.body.removeChild(textarea);
+
+      // Update state to indicate successful copy
+      setIsCopied(true);
+
+      // Reset the copied state after a short delay
+      setTimeout(() => {
+        setIsCopied(false);
+      }, 2000);
+    };
   return (
     <form className="todosSingle" onSubmit={(e) => handleEdit(e, todo.id)}>
       {edit ? (
@@ -56,8 +82,11 @@ const TodoItem = ({ todo, todos, setTodos }: Props) => {
         >
           Delete
         </div>
-        <div onClick={() => {}} className="btn btn-primary ml-1">
-          Copy
+        <div
+          onClick={handleCopyToClipboard}
+          className={`btn btn-primary ml-1 ${isCopied ? "copied" : ""}`}
+        >
+          {isCopied ? "Copied" : "Copy"}
         </div>
       </div>
     </form>
