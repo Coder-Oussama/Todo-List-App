@@ -3,7 +3,7 @@
   padding: 0;
   box-sizing: border-box;
 }
-@import url("https://fonts.googleapis.com/css2?family=Leckerli+One&family=Neucha&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@700&family=Leckerli+One&family=Neucha&display=swap');
 
 .app {
   width: 100vw;
@@ -12,7 +12,7 @@
   flex-direction: column;
   align-items: center;
   background-color: #47c02f;
-  font-family: "Neucha", cursive;
+  /* font-family: "Lato", cursive; */
 }
 
 
